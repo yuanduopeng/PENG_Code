@@ -37,9 +37,9 @@ color_thresholds = (img[:,:,0] < rgb_threshold[0])\
 # Mask dark pixels as BLACK
 color_select[color_thresholds] = [0 ,0, 0]
 
-left_bottom = [0, 539]
-right_bottom = [900, 300]
-apex = [400, 0]
+left_bottom = [0, 719]
+right_bottom = [1279, 719]
+apex = [600, 400]
 
 # Fit lines (y=Ax+B) to identify the  3 sided region of interest
 # np.polyfit() returns the coefficients [A, B] of the fit
@@ -76,4 +76,7 @@ plt.imshow(region_select)
 plt.subplot(224)
 plt.title('line_image')
 plt.imshow(line_image)
+x = [left_bottom[0], right_bottom[0], apex[0], left_bottom[0]]
+y = [left_bottom[1], right_bottom[1], apex[1], left_bottom[1]]
+plt.plot(x, y, 'b--', lw = 4)
 plt.show()
