@@ -28,19 +28,28 @@ img_edges = cv2.Canny(img_blur, low_threshold, high_threshold)
 #                   connected into a single line)
 rho = 1
 theta = np.pi/180
-threshold = 1
-min_line_length = 50
-max_line_gap = 10
+threshold = 5
+min_line_length = 10
+max_line_gap = 1
 lines = cv2.HoughLinesP(img_edges, rho, theta, threshold, np.array([]),
                                              min_line_length, max_line_gap)
+
+# Iterate over the output "lines" and draw lines on the blank
 img_line = np.copy(img)*0
 for line in lines:
     for x1, y1, x2, y2 in line:
-        cv2.line(img_line, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        cv2.line(img_line, (x1, y1), (x2, y2), (0, 255, 0), 5)
+
+# Create a "color" binary image to combine with line image
+img_edges_RGB = np.dstack((img_edges, img_edges, img_edges))
+
+# Draw the lines on the edge image
+img_edges_line = cv2.addWeighted(img_edges_RGB, 0.8, img_line, 1, 0)
 
 # show image
-cv2.imshow('img_gray', img_gray)
-cv2.imshow('img_blur', img_blur)
-cv2.imshow('img_edges', img_edges)
-cv2.imshow('img_line', img_line)
+# cv2.imshow('img_gray', img_gray)
+# cv2.imshow('img_blur', img_blur)
+# cv2.imshow('img_edges', img_edges)
+# cv2.imshow('img_line', img_line)
+cv2.imshow('img_edges_line', img_edges_line)
 cv2.waitKey(0)
